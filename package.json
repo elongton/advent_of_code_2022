@@ -1,0 +1,19 @@
+{
+  "name": "advent_of_code_2022",
+  "version": "1.0.0",
+  "description": "aoc2022",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/elongton/advent_of_code_2022.git"
+  },
+  "author": "max",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/elongton/advent_of_code_2022/issues"
+  },
+  "homepage": "https://github.com/elongton/advent_of_code_2022#readme"
+}
