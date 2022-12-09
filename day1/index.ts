@@ -23,3 +23,7 @@ const topElf = Math.max(...summedCalorieArray);
 summedCalorieArray.sort((a:number,b:number)=> (b-a));
 const sumOfTopThree = summarillion(summedCalorieArray.slice(0,3))
 console.log(sumOfTopThree)
+
+
+
+export {};
