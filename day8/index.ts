@@ -49,22 +49,24 @@ let example =
 //from north: visible 
 //from south: not visible
 
-const checkIfCurrentIsVisible = (treeIndex:number, treeLine: number[]) => {
-    const treesBefore = treeLine.slice(0, treeIndex);
-    //check if current index is visible from the beginning of the treeLine
-    return treeLine[treeIndex] > Math.max(...treesBefore)
-}
 
 const calculateVisibleTrees = (grid) => {
-    let transposeGrid = transpose(grid);
+    //define if current tree index is visible function
+    const checkIfCurrentIsVisible = (treeIndex:number, treeLine: number[]) => {
+        const treesBefore = treeLine.slice(0, treeIndex);
+        //check if current index is visible from the beginning of the treeLine
+        return treeLine[treeIndex] > Math.max(...treesBefore)
+    }
+
+    let tgrid = transpose(grid);
     let visibleTrees = 0;
     for (let i = 1; i < grid.length-1; i++){
         for (let j = 1; j < grid.length-1; j++){
             //now check all 4 directions
             if (checkIfCurrentIsVisible(j, grid[i]) 
             || checkIfCurrentIsVisible(grid[i].length - j - 1, grid[i].slice().reverse())
-            || checkIfCurrentIsVisible(i, transposeGrid[j])
-            || checkIfCurrentIsVisible(transposeGrid[j].length - i -1, transposeGrid[j].slice().reverse())
+            || checkIfCurrentIsVisible(i, tgrid[j])
+            || checkIfCurrentIsVisible(tgrid[j].length - i -1, tgrid[j].slice().reverse())
             ) visibleTrees ++
         }
     }
@@ -78,7 +80,59 @@ const calculateVisibleTrees = (grid) => {
 // console.log(testLineReversed[testLine.length-1-3])
 // console.log(checkIfCurrentIsVisible(testLine.length-1-3, testLine.slice().reverse()))
 
-let calulation = calculateTreesOnPerimeter(grid) + calculateVisibleTrees(grid)
-console.log(calulation)
+// let calulation = calculateTreesOnPerimeter(grid) + calculateVisibleTrees(grid)
+// console.log(calulation)
 
+
+/////////SECOND PAART///////
+
+
+//for each tree, slice the array between it and the edge in each direction
+const calculateBestTreeHouse = (grid) => {
+    let tgrid = transpose(grid);
+    //define the number of treesVisible based on current tree height
+    //and the sliced array in the direction in question
+    const numberOfTreesVisible = (treeHeight, slicedArray) => {
+        let i = 0
+        while (slicedArray[i] !== undefined){
+            if (slicedArray[i] >= treeHeight) {
+                i++; //add last tree
+                break;
+            }
+            i++;
+        }
+        return i
+    }
+    let slength = grid[0].length;
+    let right, left, up, down;
+
+    const scoreArray = [];
+    for (let i = 0; i < grid.length; i++){
+        for (let j = 0; j < grid.length; j++){
+            //get all to the right
+            right = grid[i].slice(j+1, slength);
+            left = grid[i].slice().reverse().slice(slength - j, slength)
+            up = tgrid[j].slice(i+1, slength);
+            down = tgrid[j].slice().reverse().slice(slength-i, slength)
+
+            // console.log("i: ", i)
+            // console.log("j: ", j)
+            // console.log("size: ", grid[i][j])
+
+            let score = 1;
+            let visible;
+            for (let arr of [right, left, up, down]){
+                // console.log(arr)
+                visible = numberOfTreesVisible(grid[i][j], arr);
+                // console.log("visible: ",visible)
+                
+                score = visible * score;
+            }
+            scoreArray.push(score);
+        }
+    }
+    return scoreArray
+}
+
+console.log(Math.max(...calculateBestTreeHouse(grid)))
 export {};
