@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/elongton/advent_of_code_2022/issues"
   },
-  "homepage": "https://github.com/elongton/advent_of_code_2022#readme"
+  "homepage": "https://github.com/elongton/advent_of_code_2022#readme",
+  "devDependencies": {
+    "typescript": "^4.9.4"
+  }
 }
