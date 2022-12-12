@@ -10,26 +10,68 @@ elevationMap['S'] = 1;
 elevationMap['E'] = 26;
 
 
-
-
-
-const explore = (node:Node, step:number) => {
-    node.visited = true;
-    // console.log(step)
-    // console.log(node.elevation)
-    // console.log(node)
-    if (node.elevation === 'E'){
-        console.log(step)
-        return;
+class Queue{
+    content = [];
+    constructor(content=[]){
+        this.content = content;
     }
-    for (let enode of node.linkedTo){
-        console.log(enode.elevation)
-        console.log(elevationMap[enode.elevation] - elevationMap[node.elevation])
-        if (!enode.visited && (elevationMap[enode.elevation] - elevationMap[node.elevation]  <= 1)){
-            step++
-            return explore(enode, step);
+
+    enqueue(node:Node){
+        this.content.unshift(node);
+    }
+
+    dequeue(){
+        return this.content.pop()
+    }
+
+    isEmpty(){
+        return this.content.length == 0;
+    }
+    showContents(){
+        console.log(this.content)
+    }
+}
+
+
+// const explore = (node:Node, step:number) => {
+//     node.visited = true;
+//     if (node.elevation === 'E'){
+//         console.log(step)
+//         return;
+//     }
+//     for (let enode of node.linkedTo){
+//         console.log(enode.elevation)
+//         console.log(elevationMap[enode.elevation] - elevationMap[node.elevation])
+//         if (!enode.visited && (elevationMap[enode.elevation] - elevationMap[node.elevation]  <= 1)){
+//             step++
+//             return explore(enode, step);
+//         }
+//     }
+// }
+
+
+const bfs = (root: Node) => {
+    let queue = new Queue();
+    root.visited = true;
+    root.howFar = 0;
+    queue.enqueue(root);
+    let currentNode:Node;
+    while (!queue.isEmpty()){
+        // queue.showContents();
+        currentNode = queue.dequeue();
+        if (currentNode.elevation == 'E'){
+            console.log(currentNode)
+            console.log('found')
+        }
+        for (let node of currentNode.linkedTo){
+            if (!node.visited && (elevationMap[node.elevation] - elevationMap[currentNode.elevation]  <= 1) ){
+                node.visited = true;
+                node.howFar = currentNode.howFar+1;
+                queue.enqueue(node);
+            }
         }
     }
+
 }
 
 
@@ -37,7 +79,8 @@ const explore = (node:Node, step:number) => {
 
 export const runPart1 = (startingPoint) => {
     // console.log(startingPoint)
-    explore(startingPoint, 0)
+    // explore(startingPoint, 0)
+    bfs(startingPoint)
 
 }
 export const runPart2 = (data) => {}

@@ -9,6 +9,7 @@ export class Node{
     elevation:string;
     linkedTo: Node[] = [];
     visited: boolean = false;
+    howFar:number;
     constructor(elevation:string){
         this.elevation = elevation;
     }
@@ -33,6 +34,7 @@ const createGraph = (parsed: string[]) => {
     for (let i=0; i < parsed.length; i++){
         let currentNodeArray = [];
         currentRow = [...parsed[i]];
+        // console.log(currentRow.length)
         //initialize first node in row
         currentNode = new Node(currentRow[0])
         //remainder of nodes
@@ -56,7 +58,11 @@ const createGraph = (parsed: string[]) => {
             }
         }
     }
-    // console.log(nodeGrid[0][0])
+    // for (let node of nodeGrid[nodeGrid.length-1]){
+    //     console.log(node.linkedTo)
+    // }
+    // console.log(nodeGrid[0].length)
+    // console.log(nodeGrid[0][66])
     return nodeGrid[20][0];
 }
 
@@ -64,3 +70,6 @@ const createGraph = (parsed: string[]) => {
 
 runPart1(createGraph(parsed))
 // runPart2(content)
+
+
+//not 2692
