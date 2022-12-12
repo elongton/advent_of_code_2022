@@ -87,16 +87,16 @@ export const runPart1 = (monkeyArray) => {
 
 ////////////Part 2////////////
 
-// https://www.geeksforgeeks.org/how-to-compute-mod-of-a-big-number/
-const bigMod = (num, a) => {
-  // Initialize result
-  let res = 0;
-  // One by one process
-  // all digits of 'num'
-  for (let i = 0; i < num.length; i++) res = (res * 10 + parseInt(num[i])) % a;
+// // https://www.geeksforgeeks.org/how-to-compute-mod-of-a-big-number/
+// const bigMod = (num, a) => {
+//   // Initialize result
+//   let res = 0;
+//   // One by one process
+//   // all digits of 'num'
+//   for (let i = 0; i < num.length; i++) res = (res * 10 + parseInt(num[i])) % a;
 
-  return res;
-};
+//   return res;
+// };
 
 class CrazyMonkey extends Monkey {
     constructor(monkey, id) {
@@ -106,14 +106,21 @@ class CrazyMonkey extends Monkey {
       return new CrazyMonkey(monkey, id);
     }
   
-    //there is no relief any more
+    //relief has to change now...
     relief(item: any): number {
+        //I'm subtracting the least common multiple of all divisble tests until it goes under 0
+        //19*5*11*17*7*13*3*2 = 9699690
+        if (item > 9699690){
+            while (item - 9699690 > 0){
+                item = item - 9699690
+            }
+        }
       return item;
     }
   
     //using bigMod now, which can handle any number
     test(item) {
-      if (bigMod(String(item), this.mtest.divisibleBy) == 0) {
+      if (item % this.mtest.divisibleBy == 0) {
         return this.mtest.istrue;
       }
       return this.mtest.isfalse;
@@ -123,6 +130,6 @@ class CrazyMonkey extends Monkey {
 export const runPart2 = (monkeyArray) => {
     const barrel = new BarrelOMonkeys(monkeyArray, CrazyMonkey.monkeyFactory);
     // barrel.listMonkeys();
-    barrel.initiateMonkeySequence(20);
+    barrel.initiateMonkeySequence(10000);
     console.log(barrel.determineMonkeyBusiness());
 };
