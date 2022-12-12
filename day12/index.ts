@@ -58,18 +58,22 @@ const createGraph = (parsed: string[]) => {
             }
         }
     }
-    // for (let node of nodeGrid[nodeGrid.length-1]){
-    //     console.log(node.linkedTo)
-    // }
-    // console.log(nodeGrid[0].length)
-    // console.log(nodeGrid[0][66])
-    return nodeGrid[20][0];
+    return nodeGrid;
 }
 
-// createGraph(parsed)
+let nodeGrid = createGraph(parsed)
+// runPart1(nodeGrid[20][0])
 
-runPart1(createGraph(parsed))
-// runPart2(content)
+// for part 2, we need to find start candidates:
+let startingNodes = [];
+for (let row of nodeGrid){
+    for(let node of row){
+        if (node.elevation == 'a'){
+            startingNodes.push(node)
+        }
+    }
+}
+runPart2(startingNodes, nodeGrid)
 
 
 //not 2692

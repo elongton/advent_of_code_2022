@@ -60,8 +60,7 @@ const bfs = (root: Node) => {
         // queue.showContents();
         currentNode = queue.dequeue();
         if (currentNode.elevation == 'E'){
-            console.log(currentNode)
-            console.log('found')
+            return currentNode.howFar;
         }
         for (let node of currentNode.linkedTo){
             if (!node.visited && (elevationMap[node.elevation] - elevationMap[currentNode.elevation]  <= 1) ){
@@ -75,12 +74,33 @@ const bfs = (root: Node) => {
 }
 
 
+export const resetNodeGrid = (nodeGrid)=>{
+ for (let row of nodeGrid){
+    for (let node of row){
+       node.visited = false;
+       node.howFar = null; 
+    }
+ }
+}
+
 
 
 export const runPart1 = (startingPoint) => {
     // console.log(startingPoint)
     // explore(startingPoint, 0)
-    bfs(startingPoint)
+    console.log(bfs(startingPoint))
 
 }
-export const runPart2 = (data) => {}
+export const runPart2 = (startingNodes, nodeGrid) => {
+    const distanceArray = [];
+    let currentDistance;
+    for (let startingNode of startingNodes){
+        currentDistance = bfs(startingNode);
+        if (currentDistance){
+            distanceArray.push(currentDistance)
+        }
+        resetNodeGrid(nodeGrid);
+    }
+    console.log(Math.min(...distanceArray))
+
+}
